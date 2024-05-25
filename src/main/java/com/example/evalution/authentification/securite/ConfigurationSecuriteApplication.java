@@ -1,5 +1,4 @@
-//package com.example.evalution.authentification.securite;
-
+package com.example.evalution.authentification.securite;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

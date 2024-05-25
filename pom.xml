@@ -14,7 +14,7 @@
 	<name>authentification</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,11 +56,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.example.evalution</groupId>
             <artifactId>authentification</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
 	<build>

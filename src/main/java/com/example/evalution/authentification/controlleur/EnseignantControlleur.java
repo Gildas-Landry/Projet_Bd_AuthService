@@ -2,17 +2,21 @@ package com.example.evalution.authentification.controlleur;
 
 import com.example.evalution.authentification.model.Enseignant;
 import com.example.evalution.authentification.service.EnseignantService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
+@CrossOrigin("*") 
 @Controller
 @RequestMapping(path="enseignant")
 public class EnseignantControlleur {
@@ -29,8 +33,16 @@ public class EnseignantControlleur {
     }
     @ResponseStatus(value= HttpStatus.CREATED)
     @PostMapping(path = "connection")
-    public void connection (@RequestBody Enseignant enseignant){
-        this.enseignantService.connection(enseignant);
+
+    public ResponseEntity<?> connection(@RequestBody Enseignant enseignant) {
+        try {
+            Enseignant enseignantFromDb = enseignantService.connection(enseignant);
+            return new ResponseEntity<>(enseignantFromDb.getId(), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

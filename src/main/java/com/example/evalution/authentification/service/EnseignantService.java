@@ -3,6 +3,8 @@ package com.example.evalution.authentification.service;
 import com.example.evalution.authentification.model.Enseignant;
 import com.example.evalution.authentification.repository.EnseignantRepository;
 import com.example.evalution.authentification.securite.EmailValidator;
+
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
@@ -23,12 +25,16 @@ public class EnseignantService  {
     private EnseignantRepository enseignantRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
+
     public EnseignantService(EnseignantRepository enseignantRepository) {
         this.enseignantRepository = enseignantRepository;
     }
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public BCryptPasswordEncoder passwordEncoder (){
-        return new BCryptPasswordEncoder();}
+        return new BCryptPasswordEncoder();
+    }
+
     public void creer (Enseignant enseignant){
 
         if (!EmailValidator.isValidEmail(enseignant.getEmail())) {
@@ -68,7 +74,16 @@ public class EnseignantService  {
             this.enseignantRepository.save(enseignantDlbd);
         }
     }
-    public void connection (Enseignant enseignant){
-    Optional<Enseignant> enseignantEx = this.enseignantRepository.findById(enseignant.getId());
+    public Enseignant connection (Enseignant enseignant){
+
+        Enseignant enseignantdlbd=this.enseignantRepository.findByEmailAndPassword(enseignant.getEmail(), enseignant.getPassword());
+
+        if (enseignantdlbd == null) {
+            throw new EntityNotFoundException("enseignant introuvable");
+        }
+
+        return enseignantdlbd;
     }
+        
+    
 }
